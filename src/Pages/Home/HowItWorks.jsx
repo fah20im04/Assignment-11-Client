@@ -29,7 +29,7 @@ const HowItWorks = () => {
           <div key={i} className="text-center p-6">
             <div className="flex justify-center mb-4">{step.icon}</div>
             <h3 className="text-xl font-semibold">{step.title}</h3>
-            <p className="text-gray-600 mt-2">{step.desc}</p>
+            <p className="text-gray-600 mt-2 font-semibold">{step.desc}</p>
           </div>
         ))}
       </div>

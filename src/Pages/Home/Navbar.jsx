@@ -41,6 +41,12 @@ const Navbar = () => {
             >
               All Issues
             </Link>
+            <Link
+              to="/my-issues"
+              className="text-neutral-900 hover:text-primary font-medium"
+            >
+             My Issues
+            </Link>
 
             <Link
               to="/extra-page-1"
@@ -154,6 +160,13 @@ const Navbar = () => {
             className="block px-4 py-2 hover:bg-neutral-200"
           >
             All Issues
+          </Link>
+          <Link
+            onClick={() => setMobileMenuOpen(false)}
+            to="/my-issues"
+            className="block px-4 py-2 hover:bg-neutral-200"
+          >
+            My Issues
           </Link>
 
           {/* User Section in Mobile */}

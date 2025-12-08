@@ -5,6 +5,7 @@ import Login from "../Pages/AuthPages/Login";
 import Register from "../Pages/AuthPages/Register";
 import ReportIssue from "../Pages/Issues/ReportIssue";
 import MyIssues from "../Pages/Issues/MyIssues";
+import IssueDetails from "../Pages/Issues/IssueDetails";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
         {
           path: "/my-issues",
           element: <MyIssues></MyIssues>
+        },
+        {
+          path: "/viewDetails/:id",
+          Component: IssueDetails
         }
     ]
   },

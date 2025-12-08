@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useAxiosSecure from "../../Hooks/useAxiosSecure"; 
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import LoadingPage from "../Home/LoadingPage";
 
 const LatestResolvedIssues = () => {
@@ -30,7 +30,7 @@ const LatestResolvedIssues = () => {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 6);
 
-  if (loading) return <LoadingPage></LoadingPage>
+  if (loading) return <LoadingPage></LoadingPage>;
   if (resolvedIssues.length === 0)
     return <p className="text-center text-gray-500">No resolved issues yet.</p>;
 
@@ -41,7 +41,7 @@ const LatestResolvedIssues = () => {
         {resolvedIssues.map((issue) => (
           <div
             key={issue._id}
-            className=" p-4 rounded-xl shadow hover:shadow-lg transition bg-gradient-to-r from-green-200 via-green-300 to-green-400"
+            className="p-4 rounded-xl shadow hover:shadow-md transition bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 border border-green-600"
           >
             {issue.image && (
               <img
@@ -50,20 +50,51 @@ const LatestResolvedIssues = () => {
                 className="w-full h-48 object-cover mb-3 rounded"
               />
             )}
-            <h3 className="font-bold text-lg">{issue.title}</h3>
-            <p className="text-sm mb-2">{issue.description}</p>
-            <p>
+
+            {/* Title with subtle success icon */}
+            <h3 className="font-semibold text-lg flex items-center text-gray-900">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-green-600 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              {issue.title}
+            </h3>
+
+            {/* Description */}
+            <p className="text-sm mb-2 text-gray-700">{issue.description}</p>
+
+            {/* Meta info */}
+            <p className="text-gray-800">
               <span className="font-semibold">Category:</span> {issue.category}
             </p>
-            <p>
+            <p className="text-gray-800">
               <span className="font-semibold">Location:</span> {issue.location}
             </p>
-            <button
-              onClick={() => navigate(`/issue/${issue._id}`)}
-              className="btn btn-sm btn-primary mt-2"
-            >
-              View Details
-            </button>
+
+            {/* Action Button */}
+            <div className="flex justify-between">
+              <Link to={`/viewDetails/${issue._id}`}
+                
+                className="mt-3 bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-md transition"
+              >
+                View Details
+              </Link>
+
+              {/* Resolved Badge */}
+              <div className="mt-3 inline-block bg-green-50 text-green-700  font-medium px-3 py-1 rounded-full border border-green-200">
+                Issue Resolved
+              </div>
+            </div>
           </div>
         ))}
       </div>

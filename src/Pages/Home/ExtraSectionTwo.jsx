@@ -10,18 +10,18 @@ const ExtraSectionTwo = () => {
           roads cleaner, safer, and more efficient.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 p-8 ">
           <div className="p-6 bg-white shadow rounded-lg">
             <h3 className="text-4xl font-bold text-green-600">1500+</h3>
-            <p className="mt-2 text-gray-700">Issues Reported</p>
+            <p className="mt-2 text-gray-700 font-bold">Issues Reported</p>
           </div>
           <div className="p-6 bg-white shadow rounded-lg">
             <h3 className="text-4xl font-bold text-green-600">1200+</h3>
-            <p className="mt-2 text-gray-700">Resolved Successfully</p>
+            <p className="mt-2 text-gray-700 font-bold">Resolved Successfully</p>
           </div>
           <div className="p-6 bg-white shadow rounded-lg">
             <h3 className="text-4xl font-bold text-green-600">5,000+</h3>
-            <p className="mt-2 text-gray-700">Active Users</p>
+            <p className="mt-2 text-gray-700 font-bold">Active Users</p>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import useAxiosSecure from "../../Hooks/useAxiosSecure"; 
 import LoadingPage from "../Home/LoadingPage"; 
 import { AuthContext } from "../../Contexts/AuthContext"; 
@@ -78,7 +78,7 @@ const IssueDetails = () => {
   const canBoost = !isOwner && issue.priority !== "High";
 
   return (
-    <div className="max-w-4xl mx-auto py-14 px-4">
+    <div className="max-w-5xl py-22 mx-auto px-4">
       <button onClick={() => navigate(-1)} className="btn mb-6">
         ← Go Back
       </button>
@@ -122,23 +122,23 @@ const IssueDetails = () => {
 
         {/* Info Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-gray-700">
-          <p>
-            <span className="font-semibold">Category:</span> {issue.category}
+          <p className="font-semibold">
+            <span className="font-bold">Category:</span> {issue.category}
           </p>
-          <p>
-            <span className="font-semibold">Location:</span> {issue.location}
+          <p className="font-semibold">
+            <span className="font-bold">Location:</span> {issue.location}
           </p>
-          <p>
-            <span className="font-semibold">Created At:</span>{" "}
+          <p className="font-semibold">
+            <span className="font-bold">Created At:</span>{" "}
             {new Date(issue.createdAt).toLocaleString()}
           </p>
-          <p>
-            <span className="font-semibold">Last Updated:</span>{" "}
+          <p className="font-semibold">
+            <span className="font-bold">Last Updated:</span>{" "}
             {new Date(issue.updatedAt).toLocaleString()}
           </p>
           {issue.assignedStaff && (
-            <p>
-              <span className="font-semibold">Assigned Staff:</span>{" "}
+            <p className="font-semibold">
+              <span className="font-bold">Assigned Staff:</span>{" "}
               {issue.assignedStaff.name} ({issue.assignedStaff.email})
             </p>
           )}
@@ -146,8 +146,8 @@ const IssueDetails = () => {
 
         {/* Description */}
         <div>
-          <h2 className="text-xl font-semibold mb-2">Description</h2>
-          <p className="text-gray-600">{issue.description}</p>
+          <h2 className="text-xl font-bold mb-2">Description</h2>
+          <p className="text-gray-600 font-semibold">{issue.description}</p>
         </div>
 
         {/* Action Buttons */}
@@ -169,13 +169,14 @@ const IssueDetails = () => {
             </button>
           )}
           {canBoost && (
-            <button
+            <Link
+            to={`/boost-payment/${id}`}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
               onClick={handleBoost}
               disabled={boosting}
             >
               {boosting ? "Boosting..." : "Boost Priority (100tk)"}
-            </button>
+            </Link>
           )}
         </div>
       </div>

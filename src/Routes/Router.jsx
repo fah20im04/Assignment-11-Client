@@ -8,6 +8,9 @@ import MyIssues from "../Pages/Issues/MyIssues";
 import IssueDetails from "../Pages/Issues/IssueDetails";
 import PrivateRoute from "./PrivateRoute";
 import AllIssues from "../Pages/Issues/AllIssues";
+import BoostPayment from "../Pages/Payment/BoostPayment";
+import BoostSuccess from "../Pages/Payment/BoostSuccess";
+import BoostCancel from "../Pages/Payment/BoostCancel";
 
 const router = createBrowserRouter([
   {
@@ -31,8 +34,8 @@ const router = createBrowserRouter([
         element: <ReportIssue></ReportIssue>,
       },
       {
-        path: '/all-issues',
-        element:<AllIssues></AllIssues>
+        path: "/all-issues",
+        element: <AllIssues></AllIssues>,
       },
       {
         path: "/my-issues",
@@ -47,6 +50,30 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <IssueDetails></IssueDetails>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/boost-payment/:issueId",
+        element: (
+          <PrivateRoute>
+            <BoostPayment></BoostPayment>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/boost-success",
+        element: (
+          <PrivateRoute>
+            <BoostSuccess />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/boost-cancel",
+        element: (
+          <PrivateRoute>
+            <BoostCancel></BoostCancel>
           </PrivateRoute>
         ),
       },

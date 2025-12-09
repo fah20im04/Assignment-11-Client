@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import LoadingPage from "../Home/LoadingPage";
@@ -122,12 +122,12 @@ const MyIssues = () => {
                   Delete
                 </button>
               )}
-              <button
-                onClick={() => navigate(`/issue/${issue._id}`)}
+              <Link
+                to={`/viewDetails/${issue._id}`}
                 className="btn btn-sm btn-primary"
               >
                 View Details
-              </button>
+              </Link>
             </div>
           </div>
         ))}

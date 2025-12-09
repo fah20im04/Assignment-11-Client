@@ -9,6 +9,7 @@ import logo from "../../assets/logo.png";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Test from "../Home/Test";
+import SocialLogin from "./SocialLogin";
 
 const Register = () => {
   const { registerUser, updateUserProfile } = useContext(AuthContext);
@@ -154,6 +155,7 @@ const Register = () => {
             Register
           </button>
         </form>
+        <SocialLogin></SocialLogin>
 
         <p className="mt-4 text-center">
           Already have an account?{" "}

@@ -21,6 +21,7 @@ import AdminDashboard from "../Layouts/DashboardComponent/AdminDashboard";
 import StaffDashboard from "../Layouts/DashboardComponent/StaffDashboard"; 
 import CitizenDashboard from "../Layouts/DashboardComponent/CitizenDashboard"; 
 import RoleRoute from "./RoleRoute";
+import BeAStaff from "../Pages/Home/Staff/BeAStaff";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyIssues />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/be_a_staff",
+        element: (
+          <PrivateRoute>
+            <BeAStaff />
           </PrivateRoute>
         ),
       },

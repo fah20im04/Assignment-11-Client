@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAuth from "../../Hooks/useAuth"; 
-import useAxiosSecure from "../../Hooks/useAxiosSecure"; 
+import useAuth from "../../Hooks/useAuth";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { Navigate } from "react-router-dom";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
@@ -43,7 +43,7 @@ const CitizenDashboard = () => {
     { name: "Resolved", value: stats.resolved || 0 },
   ];
 
-  const COLORS = ["#FBBF24", "#3B82F6", "#10B981"]; 
+  const COLORS = ["#FBBF24", "#3B82F6", "#10B981"];
 
   return (
     <div className="p-6 space-y-6">
@@ -74,26 +74,29 @@ const CitizenDashboard = () => {
       </div>
 
       {/* Pie Chart */}
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-xl font-bold mb-4 text-center">
+      <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center">
+        <h2 className="text-xl font-bold mb-6 text-center">
           Issue Status Distribution
         </h2>
-        <PieChart width={400} height={300}>
+        <PieChart width={450} height={350}>
           <Pie
             data={chartData}
             dataKey="value"
             nameKey="name"
             cx="50%"
             cy="50%"
-            outerRadius={100}
+            outerRadius={120} // slightly bigger
             label
           >
             {chartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
           <Tooltip />
-          <Legend />
+          <Legend verticalAlign="bottom" height={36} />
         </PieChart>
       </div>
     </div>

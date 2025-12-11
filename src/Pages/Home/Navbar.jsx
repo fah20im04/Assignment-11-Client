@@ -57,10 +57,10 @@ const Navbar = () => {
             </Link>
 
             <Link
-              to="/extra-page-2"
-              className="text-neutral-900 hover:text-primary font-medium"
+              to="/be_a_staff"
+              className="text-neutral-900 btn font-bold text-white btn-secondary hover:text-primary font-medium"
             >
-              Extra Page 2
+              Be a Staff
             </Link>
 
             {/* If User is Logged In */}
@@ -94,6 +94,12 @@ const Navbar = () => {
                       className="block px-4 py-2 text-neutral-900 hover:bg-neutral-200"
                     >
                       My Profile
+                    </Link>
+                    <Link
+                      to="/be_a_staff"
+                      className="block px-4 py-2 text-neutral-900 hover:bg-neutral-200"
+                    >
+                      Be a Staff
                     </Link>
 
                     <button
@@ -192,6 +198,12 @@ const Navbar = () => {
                 className="block px-4 py-2 hover:bg-neutral-200"
               >
                 My Profile
+              </Link>
+              <Link
+                to="/be_a_staff"
+                className="block px-4 py-2 hover:bg-neutral-200"
+              >
+                Be a Staff
               </Link>
 
               <button

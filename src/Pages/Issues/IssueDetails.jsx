@@ -15,6 +15,8 @@ const IssueDetails = () => {
   const [loading, setLoading] = useState(true);
   const [boosting, setBoosting] = useState(false);
 
+  // console.log('issue email',issue.userEmail);
+  
   useEffect(() => {
     const fetchIssue = async () => {
       try {
@@ -49,7 +51,8 @@ const IssueDetails = () => {
   const isOwner = user && user.email === issue.userEmail;
   const canEdit = isOwner && issue.status === "Pending";
   const canBoost = isOwner && issue.priority !== "High";
-
+  console.log("issue email",issue.userEmail);
+  
   // Status color logic
   const statusColor = {
     Pending: "bg-yellow-500",
@@ -103,7 +106,7 @@ const IssueDetails = () => {
             <span className="font-bold">Category:</span> {issue.category}
           </p>
           <p className="font-semibold">
-            <span className="font-bold">Location:</span> {issue.location}
+            <span className="font-bold">Location:</span> {issue.reporterDistrict}
           </p>
           <p className="font-semibold">
             <span className="font-bold">Created At:</span>{" "}

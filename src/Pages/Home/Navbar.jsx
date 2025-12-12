@@ -50,10 +50,10 @@ const Navbar = () => {
             </Link>
 
             <Link
-              to="/extra-page-1"
+              to="/coverage"
               className="text-neutral-900 hover:text-primary font-medium"
             >
-              Extra Page 1
+              Coverage
             </Link>
 
             <Link
@@ -173,6 +173,13 @@ const Navbar = () => {
             className="block px-4 py-2 hover:bg-neutral-200"
           >
             All Issues
+          </Link>
+          <Link
+            onClick={() => setMobileMenuOpen(false)}
+            to="/coverage"
+            className="block px-4 py-2 hover:bg-neutral-200"
+          >
+            Coverage
           </Link>
           <Link
             onClick={() => setMobileMenuOpen(false)}

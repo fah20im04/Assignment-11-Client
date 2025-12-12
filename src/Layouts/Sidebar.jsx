@@ -7,8 +7,7 @@ import LoadingPage from "../Pages/Home/LoadingPage";
 const Sidebar = () => {
   const { role, roleLoading } = useRole();
 
-  if (roleLoading)
-    return <LoadingPage/>
+
 
   return (
     <aside className="w-64 bg-white shadow-md p-4 flex flex-col gap-4">
@@ -36,7 +35,7 @@ const Sidebar = () => {
         Report Issue
       </NavLink>
 
-      {/* 🔥 ADMIN-ONLY SECTION */}
+      {/*  ADMIN-ONLY SECTION */}
       {role === "admin" && (
         <div className="mt-4 border-t pt-3">
           <h2 className="text-lg font-semibold text-gray-700 mb-1">
@@ -44,7 +43,7 @@ const Sidebar = () => {
           </h2>
 
           <NavLink
-            to="/dashboard/manage-issues"
+            to="/dashboard/allIssuesAdmin"
             className="hover:bg-gray-200 p-2 font-bold rounded block"
           >
             Issue Management

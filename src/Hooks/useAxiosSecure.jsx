@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { getAuth } from "firebase/auth";
+import { getAuth, onIdTokenChanged } from "firebase/auth";
 import useAuth from "./useAuth";
 import { useNavigate } from "react-router-dom";
 
@@ -13,27 +13,39 @@ const useAxiosSecure = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const requestInterceptor = axiosSecure.interceptors.request.use(
-      async (config) => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        if (user) {
-          const token = await user.getIdToken();
-          config.headers = {
-            ...config.headers,
-            Authorization: `Bearer ${token}`,
-          };
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
+    const auth = getAuth();
 
+    // 🔥 When Firebase refreshes token → save new token in localStorage
+    const unsubscribe = onIdTokenChanged(auth, async (user) => {
+      if (user) {
+        const token = await user.getIdToken(true);
+
+        localStorage.setItem("accessToken", token);
+
+        console.log("🔥 Firebase token saved to localStorage");
+      } else {
+        console.log("🧹 Clearing token (user logged out)");
+        localStorage.removeItem("accessToken");
+      }
+    });
+
+    // 🔥 Interceptor: Attach token to every secure request
+    axiosSecure.interceptors.request.use((config) => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
+
+    // 🔥 Handle unauthorized errors
     const responseInterceptor = axiosSecure.interceptors.response.use(
-      (response) => response,
+      (res) => res,
       (error) => {
-        const statusCode = error?.response?.status;
-        if (statusCode === 401 || statusCode === 403) {
+        if (
+          error?.response?.status === 401 ||
+          error?.response?.status === 403
+        ) {
           logOut().then(() => navigate("/login"));
         }
         return Promise.reject(error);
@@ -41,7 +53,7 @@ const useAxiosSecure = () => {
     );
 
     return () => {
-      axiosSecure.interceptors.request.eject(requestInterceptor);
+      unsubscribe();
       axiosSecure.interceptors.response.eject(responseInterceptor);
     };
   }, [logOut, navigate]);

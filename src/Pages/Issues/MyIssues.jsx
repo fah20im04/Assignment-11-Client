@@ -13,13 +13,12 @@ const MyIssues = () => {
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
 
-
   useEffect(() => {
-    if (!user) return; 
+    if (!user) return;
     const fetchIssues = async () => {
       try {
         setLoading(true);
-        const res = await axiosSecure.get(`/issues/my-issues/${user.email}`);
+        const res = await axiosSecure.get(`/issues/my-issues`); // no email
         setIssues(res.data);
       } catch (err) {
         console.error(err);

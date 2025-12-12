@@ -16,12 +16,14 @@ import SubscribeSuccess from "../Pages/Home/Subscribe/SubscribeSuccess";
 import SubscribeCancel from "../Pages/Home/Subscribe/SubscribeCancel";
 
 // Dashboard imports
-import DashboardLayout from "../Layouts/DashboardLayout"; 
-import AdminDashboard from "../Layouts/DashboardComponent/AdminDashboard"; 
-import StaffDashboard from "../Layouts/DashboardComponent/StaffDashboard"; 
-import CitizenDashboard from "../Layouts/DashboardComponent/CitizenDashboard"; 
+import DashboardLayout from "../Layouts/DashboardLayout";
+import AdminDashboard from "../Layouts/DashboardComponent/AdminDashboard";
+import StaffDashboard from "../Layouts/DashboardComponent/StaffDashboard";
+import CitizenDashboard from "../Layouts/DashboardComponent/CitizenDashboard";
 import RoleRoute from "./RoleRoute";
 import BeAStaff from "../Pages/Home/Staff/BeAStaff";
+import AllIssuesAdmin from "../Pages/Home/Admin/AllIssuesAdmin";
+import Coverage from "../Pages/Home/Coverage/Coverage";
 
 const router = createBrowserRouter([
   {
@@ -40,12 +42,18 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/coverage",
+        element: <Coverage></Coverage>,
+        loader: () => fetch("/OurCenters.json").then((res) => res.json()),
+      },
+      {
         path: "/reportIssue",
         element: (
           <PrivateRoute>
             <ReportIssue />
           </PrivateRoute>
         ),
+        loader: () => fetch("/OurCenters.json").then((res) => res.json()),
       },
       { path: "/all-issues", element: <AllIssues /> },
       {
@@ -63,6 +71,7 @@ const router = createBrowserRouter([
             <BeAStaff />
           </PrivateRoute>
         ),
+        loader: () => fetch("/OurCenters.json").then((res) => res.json()),
       },
       {
         path: "/viewDetails/:id",
@@ -107,17 +116,25 @@ const router = createBrowserRouter([
           {
             path: "staff",
             element: (
-              <RoleRoute role="staff">
+              <PrivateRoute>
                 <StaffDashboard />
-              </RoleRoute>
+              </PrivateRoute>
             ),
           },
           {
             path: "citizen",
             element: (
-              <RoleRoute role="citizen">
+              <PrivateRoute>
                 <CitizenDashboard />
-              </RoleRoute>
+              </PrivateRoute>
+            ),
+          },
+          {
+            path: "allIssuesAdmin",
+            element: (
+              <PrivateRoute>
+                <AllIssuesAdmin />
+              </PrivateRoute>
             ),
           },
         ],

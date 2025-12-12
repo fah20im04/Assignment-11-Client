@@ -27,13 +27,13 @@ const AdminDashboard = () => {
     },
   });
 
-  if (isLoading) return <p>Loading...</p>;
+
 
   return (
     <div className="p-6 space-y-8">
       {/* HEADER */}
       <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-      <Link className="text-white h-[100px] rounded-xl text-3xl font-bold  btn btn-primary">
+      <Link to='/dashboard/allIssuesAdmin' className="text-white h-[100px] rounded-xl text-3xl font-bold  btn btn-primary">
         Issuse Management
       </Link>
 

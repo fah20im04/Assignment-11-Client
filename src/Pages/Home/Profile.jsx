@@ -2,55 +2,74 @@ import React, { useEffect, useState, useContext } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import LoadingPage from "./LoadingPage";
 import { AuthContext } from "../../Contexts/AuthContext";
-import useAuth from "../../Hooks/useAuth";
-import useAxios from "../../Hooks/useAxios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const axiosSecure = useAxiosSecure();
-  const axiosInstance = useAxios();
   const { user: authUser } = useContext(AuthContext);
-  console.log("user form profile", authUser);
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [subscribing, setSubscribing] = useState(false);
-  // console.log(authUser.email)
-  const [formData, setFormData] = useState({
-    displayName: "",
-    email: "",
-  });
+  const [formData, setFormData] = useState({ displayName: "" });
+
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  // Fetch profile
+  const fetchProfile = async () => {
+    if (!authUser?.email) return;
+    try {
+      const res = await axiosSecure.get(`/profile?email=${authUser.email}`);
+      setUser(res.data);
+      setFormData({ displayName: res.data.displayName || "" });
+    } catch (err) {
+      console.error("Fetch profile error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (!authUser?.email) return;
-    const fetchProfile = async () => {
-      try {
-        console.log("Fetching profile for:", authUser.email);
-        const res = await axiosSecure.get(`/profile?email=${authUser.email}`);
-        console.log("Profile response:", res.data);
-        setUser(res.data);
-        setFormData({
-          displayName: res.data.displayName || "",
-          email: res.data.email || "",
-        });
-      } catch (err) {
-        console.error("Fetch profile error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProfile();
   }, [authUser]);
+
+  // Check Stripe subscription success redirect
+  useEffect(() => {
+    const sessionId = searchParams.get("session_id");
+    if (sessionId) {
+      const confirmSubscription = async () => {
+        try {
+          const res = await axiosSecure.get(
+            `/subscribe-success?session_id=${sessionId}`
+          );
+          setUser((prev) => ({ ...prev, isPremium: true }));
+          alert("Subscription successful! You are now a Premium member.");
+          navigate("/profile", { replace: true });
+        } catch (err) {
+          console.error("Confirm subscription error:", err);
+          alert("Subscription confirmation failed. Please try again.");
+        }
+      };
+      confirmSubscription();
+    }
+  }, [searchParams, navigate, axiosSecure]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleUpdate = async () => {
+    if (user?.isBlocked) {
+      alert("Your account is blocked. Cannot update profile.");
+      return;
+    }
+
     setUpdating(true);
     try {
-      const res = await axiosSecure.patch("/profile", formData);
+      const res = await axiosSecure.patch("/profile", {
+        displayName: formData.displayName,
+      });
       setUser(res.data);
       alert("Profile updated successfully");
     } catch (err) {
@@ -62,16 +81,24 @@ const Profile = () => {
   };
 
   const handleSubscribe = async () => {
+    if (user?.isBlocked) {
+      alert("Your account is blocked. Cannot subscribe.");
+      return;
+    }
+
     setSubscribing(true);
     try {
-      const res = await axiosSecure.post("/subscribe", {
-        email: authUser.email,
-      });
-
+      const res = await axiosSecure.post("/subscribe", {});
+      if (!res.data?.url) {
+        console.error("Backend did not return a URL:", res.data);
+        alert("Subscription failed. Invalid server response.");
+        return;
+      }
       window.location.href = res.data.url;
     } catch (err) {
-      console.error(err);
-      alert("Failed to start subscription");
+      console.error("Subscription failed:", err);
+      alert("Subscription failed. Check the console for details.");
+    } finally {
       setSubscribing(false);
     }
   };
@@ -79,7 +106,7 @@ const Profile = () => {
   if (loading) {
     return (
       <div className="py-16">
-        <LoadingPage />;
+        <LoadingPage />
       </div>
     );
   }
@@ -99,14 +126,12 @@ const Profile = () => {
         <h1 className="text-3xl font-bold mt-4">{user.displayName}</h1>
         <p className="text-gray-500">{user.email}</p>
 
-        {/* Premium */}
         {user.isPremium && (
           <div className="mt-3 px-4 py-1 rounded-full bg-yellow-400 text-white text-sm font-semibold shadow-md">
             ⭐ Premium Member
           </div>
         )}
 
-        {/* Blocked Message */}
         {user.isBlocked && (
           <div className="mt-4 bg-red-100 text-red-600 px-4 py-2 rounded-lg border border-red-200">
             Your account is blocked. Contact support.
@@ -114,10 +139,9 @@ const Profile = () => {
         )}
       </div>
 
-      {/* Card */}
+      {/* Account Details */}
       <div className="bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
         <h2 className="text-xl font-semibold mb-6">Account Details</h2>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="text-sm text-gray-600 font-medium">Name</label>
@@ -136,7 +160,7 @@ const Profile = () => {
             <input
               type="email"
               name="email"
-              value={formData.email}
+              value={user.email}
               disabled
               className="mt-1 w-full px-4 py-2 rounded-lg border border-gray-200 bg-gray-100 cursor-not-allowed"
             />
@@ -155,7 +179,6 @@ const Profile = () => {
           {updating ? "Updating..." : "Save Changes"}
         </button>
 
-        {/* Premium Upgrade */}
         {!user.isPremium && !user.isBlocked && (
           <div className="mt-10 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 p-6 rounded-xl shadow-sm">
             <h3 className="text-lg font-semibold text-blue-900">
@@ -164,7 +187,6 @@ const Profile = () => {
             <p className="text-sm text-blue-800 mt-1">
               Unlock unlimited issue submissions + exclusive features.
             </p>
-
             <button
               onClick={handleSubscribe}
               disabled={subscribing}
@@ -175,7 +197,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Already premium */}
         {user.isPremium && (
           <p className="mt-6 text-center text-green-600 text-sm font-medium">
             You are a premium user — enjoy unlimited access! ✔

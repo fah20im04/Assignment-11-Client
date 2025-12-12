@@ -7,6 +7,7 @@ import CitizenDashboard from "./CitizenDashboard";
 
 const DashboardHome = () => {
   const { role, roleLoading } = useRole();
+  console.log('dashboard role',role);
 
   if (roleLoading) return <LoadingPage />;
 

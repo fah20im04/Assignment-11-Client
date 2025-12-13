@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
-import Test from "../Home/Test";
 import SocialLogin from "./SocialLogin";
 
 const Login = () => {
@@ -67,7 +66,7 @@ const Login = () => {
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-xl text-gray-500 z-10"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                  {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
                 </span>
               </div>
 
@@ -106,7 +105,7 @@ const Login = () => {
             Register
           </Link>
         </p>
-        <Test></Test>
+        
       </div>
     </div>
   );

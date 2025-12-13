@@ -1,7 +1,7 @@
 // DashboardLayout.jsx
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar"; 
+import Sidebar from "./Sidebar";
 
 import DashboardHome from "./DashboardComponent/DashboardHome";
 
@@ -13,9 +13,8 @@ const DashboardLayout = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        <DashboardHome/>
         <main className="p-6 bg-gray-100 flex-1 overflow-auto">
-          <Outlet />
+          <Outlet /> {/* renders DashboardHome OR panel routes */}
         </main>
       </div>
     </div>

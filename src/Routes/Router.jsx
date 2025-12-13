@@ -24,6 +24,9 @@ import RoleRoute from "./RoleRoute";
 import BeAStaff from "../Pages/Home/Staff/BeAStaff";
 import AllIssuesAdmin from "../Pages/Home/Admin/AllIssuesAdmin";
 import Coverage from "../Pages/Home/Coverage/Coverage";
+import StaffAssignedIssue from "../Pages/Home/Staff/StaffAssignedIssue";
+import DashboardHome from "../Layouts/DashboardComponent/DashboardHome";
+import StaffManageMent from "../Pages/Home/Admin/StaffManageMent";
 
 const router = createBrowserRouter([
   {
@@ -107,35 +110,27 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: (
-              <RoleRoute role="admin">
-                <AdminDashboard />
-              </RoleRoute>
-            ),
+            element: <DashboardHome />,
           },
           {
             path: "staff",
-            element: (
-              <PrivateRoute>
-                <StaffDashboard />
-              </PrivateRoute>
-            ),
+            element: <StaffDashboard />,
+          },
+          {
+            path: "manage_staff",
+            element: <StaffManageMent />,
+          },
+          {
+            path: "staffAssignedIssue",
+            element: <StaffAssignedIssue />,
           },
           {
             path: "citizen",
-            element: (
-              <PrivateRoute>
-                <CitizenDashboard />
-              </PrivateRoute>
-            ),
+            element: <CitizenDashboard />,
           },
           {
             path: "allIssuesAdmin",
-            element: (
-              <PrivateRoute>
-                <AllIssuesAdmin />
-              </PrivateRoute>
-            ),
+            element: <AllIssuesAdmin />,
           },
         ],
       },

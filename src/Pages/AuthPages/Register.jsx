@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 import logo from "../../assets/logo.png";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import Test from "../Home/Test";
 import SocialLogin from "./SocialLogin";
 import { getAuth } from "firebase/auth";
 

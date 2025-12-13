@@ -3,14 +3,21 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 export function AssignModal({ issue, onClose, onAssign }) {
+  console.log(issue);
   const axiosSecure = useAxiosSecure();
+
   const { data: staff = [] } = useQuery({
     queryKey: ["staff-list"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/staff"); // endpoint to list staff (only admin)
+      const res = await axiosSecure.get("/staff"); // get all staff
       return res.data;
     },
   });
+
+  // Filter staff by reporter's district
+  const filteredStaff = staff.filter(
+    (s) => s.district === issue.reporterDistrict && s.status === "Accepted"
+  );
 
   const [selected, setSelected] = useState("");
 
@@ -26,9 +33,9 @@ export function AssignModal({ issue, onClose, onAssign }) {
           onChange={(e) => setSelected(e.target.value)}
         >
           <option value="">Select staff</option>
-          {staff.map((s) => (
+          {filteredStaff.map((s) => (
             <option key={s.email} value={s.email}>
-              {s.displayName || s.email}
+              {s.displayName || s.email} ({s.district})
             </option>
           ))}
         </select>
@@ -38,7 +45,7 @@ export function AssignModal({ issue, onClose, onAssign }) {
           </button>
           <button
             onClick={() => {
-              const staffObj = staff.find((s) => s.email === selected);
+              const staffObj = filteredStaff.find((s) => s.email === selected);
               onAssign(selected, staffObj?.displayName || selected);
             }}
             className="btn btn-primary"

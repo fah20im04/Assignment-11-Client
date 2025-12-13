@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import useRole from "../../../Hooks/useRole"; 
+import useRole from "../../../Hooks/useRole";
 import LoadingPage from "../../Home/LoadingPage";
 import Swal from "sweetalert2";
 import { AssignModal } from "../Modal/AssignModal";
@@ -13,12 +13,6 @@ const AllIssuesAdmin = () => {
 
   // Show loading while role is fetched
   if (roleLoading) return <LoadingPage />;
-
-  // Only admin can access
-  // if (role !== "admin") {
-  //   return ;
-
-  // Fetch all issues
   const {
     data = { issues: [] },
     refetch,
@@ -76,6 +70,7 @@ const AllIssuesAdmin = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 border">Title</th>
+              <th className="px-4 py-2 border">Location</th>
               <th className="px-4 py-2 border">Category</th>
               <th className="px-4 py-2 border">Status</th>
               <th className="px-4 py-2 border">Priority</th>
@@ -87,6 +82,7 @@ const AllIssuesAdmin = () => {
             {data.issues.map((issue) => (
               <tr key={issue._id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 border">{issue.title}</td>
+                <td className="px-4 py-2 border">{issue.reporterDistrict}</td>
                 <td className="px-4 py-2 border">{issue.category}</td>
                 <td className="px-4 py-2 border">{issue.status}</td>
                 <td className="px-4 py-2 border">{issue.priority}</td>
@@ -120,7 +116,7 @@ const AllIssuesAdmin = () => {
       {/* ASSIGN MODAL */}
       {assignIssue && (
         <AssignModal
-          issue={assignIssue}
+          issue={assignIssue} // assignIssue must contain { title, _id, district, etc. }
           onClose={() => setAssignIssue(null)}
           onAssign={async (staffEmail, staffName) => {
             await assignMutation.mutateAsync({
@@ -135,6 +131,5 @@ const AllIssuesAdmin = () => {
     </div>
   );
 };
-
 
 export default AllIssuesAdmin;
